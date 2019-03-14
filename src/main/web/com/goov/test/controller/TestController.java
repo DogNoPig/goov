@@ -13,9 +13,9 @@ public class TestController {
     @RequestMapping("/index")
     public String indexTest2() {
         System.out.println("进入首页！");
-        Integer count = testService.selectCount();
-        System.out.println("答案数量为+"+count);
-        return "/index";
+//        Integer count = testService.selectCount();
+//        System.out.println("答案数量为+"+count);
+        return "redirect:/login";
     }
 
 }
