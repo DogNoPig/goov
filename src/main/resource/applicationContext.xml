@@ -18,6 +18,61 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <!--<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>-->
+
+    <bean id="defaultAdvisorAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
+        <!-- 必须改为true，即使用cglib方式为Action创建代理对象。默认值为false，使用JDK创建代理对象，会造成问题 -->
+        <property name="proxyTargetClass" value="true"></property>
+    </bean>
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- Shiro的核心安全接口，这个属性是必须的 -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 身份认证失败，则跳转到登录页面的配置 -->
+        <property name="loginUrl" value="/login"/><!--登录页面，-->
+        <!-- 身份验证成功，则跳转到成功页面 -->
+        <property name="successUrl" value="/index/index"/><!--登录成功页面，如果自己设置了返回页面，则不跳转-->
+        <!-- 权限验证失败，则跳转到指定页面 -->
+        <property name="unauthorizedUrl" value="/index/error"/>
+        <!-- Shiro链接约束配置，即过滤的定义 -->
+        <property name="filterChainDefinitions">
+            <value>
+                /doLogin=anon <!--表示都可以访问-->
+                /login=anon
+                /test = anon
+                /static/**/**=anon
+                <!--  /**/home=perms[home] perms表示需要该权限才能访问的页面
+                 /**/**/add=perms[add]perms表示需要add权限才能添加
+                 /**/**/edit=perms[edit]
+                 /**/**/remove=perms[remove] -->
+                <!--  /**/admin=roles["admin"] 只有拥有admin角色和user角色的用户才可访问，同时需要拥有多个角色的话，用引号引起来，中间用逗号隔开 -->
+                /**/**=authc <!--authc表示需要认证才能访问的页面-->
+                /**=authc
+            </value>
+        </property>
+    </bean>
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <!-- 自定义Realm -->
+    <bean id="myRealm" class="com.goov.sys.SysShiroRealm"/>
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"/>
+    </bean>
+    <!-- 拦截错误信息并跳转到指定页面 -->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.apache.shiro.authz.UnauthorizedException">error</prop>
+                <!-- <prop key="java.lang.Throwable">error</prop> -->
+            </props>
+        </property>
+    </bean>
     <import resource="spring-mybatis.xml"/>
     <import resource="spring-mvc.xml"/>
 
