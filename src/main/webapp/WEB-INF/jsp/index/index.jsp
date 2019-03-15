@@ -1,64 +1,21 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2019/3/14
-  Time: 16:37
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
     <title>主页面</title>
     <meta charset="UTF-8" />
-    <!--引入主题样式-->
-    <link rel="stylesheet" type="text/css" href="${ctx}/static/js/jqueryEasyUI/themes/default/easyui.css" />
-    <!--引入图标样式-->
-    <link rel="stylesheet" type="text/css" href="${ctx}/static/js/jqueryEasyUI/themes/icon.css" />
-    <!--引入jQuery文件-->
-    <script src="${ctx}/static/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-    <!--引入EasyUi的js文件-->
-    <script src="${ctx}/static/js/jqueryEasyUI/jquery.easyui.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="${ctx}/static/js/jqueryEasyUI/locale/easyui-lang-zh_CN.js" type="text/javascript" charset="utf-8"></script>
-    <!--
-        主页面:
-            1 引入EasyUI插件
-            2 使用body布局方式
-            3 将布局后的每块区域完成内容填充
-    -->
-    <style type="text/css">
-        #sdiv {
-            text-align: center;
-            font-size: 14px;
-            font-weight: bold;
-            line-height: 30px;
-            background-color: gray;
-        }
-        /*修改头部标题样式*/
-        #n_title {
-            color: white;
-            font-size: 14px;
-            line-height: 40px;
-        }
-        /*修改标题超链接样式*/
-        #n_title a {
-            text-decoration: none;
-            color: white;
-        }
-        #n_title a:hover {
-            color: orange;
-        }
-        /*修改密码样式*/
-        #div_pwd table {
-            margin: auto;
-            margin-top: 10px;
-        }
-        #div_pwd table tr {
-            height: 40px;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="${ctx}/static/plugins/easyui/themes/metro/easyui.css" />
+    <link rel="stylesheet" href="${ctx}/static/plugins/easyui/themes/icon.css" />
+    <link rel="stylesheet" href="${ctx}/static/plugins/easyui/style/metro-black/style.css" />
+    <link rel="stylesheet" href="${ctx}/static/plugins/webfont/css/font-awesome.min.css" />
+
+    <script src="${ctx}/static/plugins/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="${ctx}/static/plugins/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="${ctx}/static/plugins/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="${ctx}/static/plugins/jquery.jdirk.min.js" ></script>
+    <script type="text/javascript" src="${ctx}/static/plugins/jeasyui.ext.js" ></script>
     <!--声明js代码域-->
     <script type="text/javascript">
         /*网页js功能*/
@@ -120,7 +77,7 @@
                         return;
                     }
                     //判断选项卡是否存在
-                    var has=$("#div_tabs").tabs("exists",node.text);
+                    var has = $("#div_tabs").tabs("exists",node.text);
                     if(has){
                         //选中存在的选项卡
                         $("#div_tabs").tabs("select",node.text);
@@ -132,129 +89,125 @@
                             content:"<iframe src="+attrs.url+" style='width:100%;height:98%' frameborder='0'/>"
                         })
                     }
-
-
                 }
             })
-
-
-
         })
-        /*
-            Json数据格式
-                {"键名":"值","键名":"值",...........}
-
-                {
-                    "键名":"值",
-                    "键名":"值",
-                    ...........
-                }
-         *
-         *
-         * */
     </script>
 </head>
 
-<body class="easyui-layout">
-    <!--布局：北-->
-    <div data-options="region:'north'" style="height: 50%;background-image: url(${ctx}/static/img/layout-browser-hd-bg.gif);">
-    <!--添加网站Logo-->
-    <span id="n_logo" style="margin-left: 20px;">
-                <img src="${ctx}/static/img/blocks.gif" width="35px" style="margin-top: 5px;"/>
-                <font color="white" size="4px">506班级管理系统</font>
-            </span>
-    <span id="n_title" style="float: right;">
-                欢迎 admin登录
-                <a id="n_title_pwd" href="javascript:void(0)">修改密码</a>|
-                <a id="n_title_out" href="javascript:void(0)">退出</a>
-            </span>
-</div>
-    <!--布局：南-->
-    <div id="sdiv" data-options="region:'south',border:false" style="height:35%;">
-    ©2008-2018 506班级网站,仿冒必纠
-</div>
-    <!--布局：西-->
-    <div data-options="region:'west',title:'系统菜单',split:true" style="width: 200px;">
-    <!--分类效果实现-->
-    <div class="easyui-accordion" data-options="fit:true,border:false">
-        <div id="" title="常用网站" >
-            <!--创建菜单-->
-            <ul id="treeMenu" class="easyui-tree">
-                <li>
-                    <span>购物网站</span>
-                    <!--二级-->
-                    <ul>
-                        <li data-options="attributes:{url:'http://www.taobao.com'}">淘宝网</li>
-                        <li data-options="attributes:{url:'http://www.jd.com'}">京东网</li>
-                        <li data-options="attributes:{url:'http://www.suning.com'}">苏宁易购</li>
-                    </ul>
-                </li>
-                <li>
-                    <span>学习网站</span>
-                    <ul>
-                        <li data-options="attributes:{url:'http://www.bjsxt.com'}">北京尚学堂</li>
-                        <li data-options="attributes:{url:'http://www.baidu.com'}">百度一下</li>
-                        <li data-options="attributes:{url:'http://www.so.com'}">360搜索</li>
-                    </ul>
-                </li>
-                <li>
-                    <span>娱乐网站</span>
-                    <ul>
-                        <li>斗鱼</li>
-                        <li>虎牙</li>
-                        <li>熊猫</li>
-                    </ul>
-                </li>
-            </ul>
+<body class="easyui-layout" data-options="fit:true" >
+    <div id="easyui-header" data-options="region:'north'" style="display: none;">
+        <div class="logo-content">
+            <span class="logo-icon fa fa-leaf"></span>
+            <span class="project-name">不会</span>
         </div>
-        <div id="" title="个人收藏">
-            菜单二
+        <div class="quick-link-content">
+            <a class="quick-item easyui-linkbutton" plain="true" tree-target="json/tree1.json">
+                <center class="top-fa-center"><i class="fa fa-drivers-license-o fa-2x"></i></center>
+                <span class="quick-item-name">用户管理</span>
+            </a>
+            <a class="quick-item easyui-linkbutton" plain="true" tree-target="json/tree2.json">
+                <center class="top-fa-center"><i class="fa fa-desktop fa-2x"></i></center>
+                <span class="quick-item-name">控制面板</span>
+            </a>
+            <a class="quick-item easyui-linkbutton" plain="true" tree-target="json/tree3.json">
+                <center class="top-fa-center"><i class="fa fa-cog fa-2x"></i></center>
+                <span class="quick-item-name">系统配置</span>
+            </a>
+            <a class="quick-item easyui-linkbutton" plain="true" tree-target="json/tree4.json">
+                <center class="top-fa-center"><i class="fa fa-envelope-o fa-2x"></i></center>
+                <span class="quick-item-name">我的邮件</span>
+            </a>
+            <a class="quick-item easyui-linkbutton" plain="true" tree-target="json/tree5.json">
+                <center class="top-fa-center"><i class="fa fa-trash fa-2x"></i></center>
+                <span class="quick-item-name">回收站</span>
+            </a>
         </div>
-        <div id="" title="系统信息">
-            菜单三
-        </div>
-
-    </div>
-
-</div>
-    <!--布局：中间-->
-    <div data-options="region:'center'">
-    <!--选项卡使用-->
-    <div id="div_tabs" class="easyui-tabs" data-options="fit:true,border:false">
-        <!--首页-->
-        <div id="" title="首页" style="background-image:url(${ctx}/static/img/body.jpg) ;background-size: cover;">
-
+        <div class="user-info">
+            <a href="javascript:void(0)" class="easyui-menubutton" data-options="plain:true,menu:'#user-info-mm',iconCls:'icon-user-info'"><shiro:principal/></a>
+            <div id="user-info-mm" style="width:150px;">
+                <shiro:hasPermission name="NO1">
+                    <div>我的资料</div>
+                </shiro:hasPermission>
+                <shiro:hasPermission name="NO2">
+                    <div>更改密码</div>
+                </shiro:hasPermission>
+                <div class="menu-sep"></div>
+                <div iconCls="icon-exit"><a href="${ctx}/logout">安全退出</a></div>
+            </div>
         </div>
     </div>
+    <div id="easyui-nav" data-options="region:'west',split:true,title:'导航菜单',minWidth:200,maxWidth:300">
+        <ul id="left-menu-tree" class="easyui-tree"></ul>
+    </div>
+    <div data-options="region:'center',title:'',border:false">
+        <div id="easyui-main-tabs" class="easyui-tabs" data-options="fit:true">
+            <div title="欢迎使用" data-options="iconCls:'icon-home',href:'https://www.baidu.com/'"></div>
+        </div>
+    </div>
+
+    <div id="easyui-footer" data-options="region:'south'" style="display: none;">
+			<span class="copyright-text">
+				Copyright &copy; 2016 <a href="http://www.github.com/wuwz">jeeweb.org</a> Allrights Reserved.
+			</span>
 </div>
-    <!--创建修改密码窗口-->
-    <div id="div_pwd" class="easyui-window" title="修改密码" style="width: 400px;height: 250px;" data-options="collapsible:false,minimizable:false,maximizable:false,closed:true,modal:true">
-    <table>
-        <tr>
-            <td>原有密码:</td>
-            <td>
-                <input type="password" />
-            </td>
-        </tr>
-        <tr>
-            <td>新密码:</td>
-            <td>
-                <input type="password" />
-            </td>
-        </tr>
-        <tr>
-            <td>确认密码:</td>
-            <td>
-                <input type="password" />
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <a id="btnCon" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">确认修改</a>
-                <a id="btnCan" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>
-            </td>
-        </tr>
-    </table>
-</div>
+
+    <script type="text/javascript">
+        // 顶部模块单击事件
+        $('.quick-item').live('click',function() {
+            $(this).addClass('quick-item-selected');
+            $('.quick-item').not(this).removeClass('quick-item-selected');
+
+            var treeTarget = $(this).attr('tree-target');
+            var targetName = $(this).find('.quick-item-name').html();
+
+            // 导航栏名称变更
+            //$('#easyui-nav').layout('panel','west').panel('setTitle',targetName);
+            $('.layout-panel-west .panel-title').text(targetName);
+
+            // 重新渲染tree
+            $('#left-menu-tree').tree({
+                animate: true,
+                method: 'get',
+                url: treeTarget,
+                lines: true,
+                onSelect: function(node) {
+                    if(node.url) {
+                        $.easyuiExt.openTab({
+                            id: 'tabs-test',
+                            inIFrame: false,
+                            title: node.text,
+                            href: node.url,
+                            iconCls:'icon-file',
+                            closable: true
+                        });
+                    }
+                },
+                onLoadError: onNoTreeData,
+                onLoadSuccess: function(node, data) {
+                    if(!data || data.length == 0) {
+                        onNoTreeData();
+                    }
+                }
+            });
+        });
+
+        // 当左侧菜单下没有数据时展示
+        var onNoTreeData = function() {
+            $('#left-menu-tree').html("<center style='margin-top:15px;color: #666;'>该模块下暂时没有子菜单.</center>");
+        }
+
+        // 执行初始化工作
+        window.onload = function() {
+            // 1. 默认点击第一个菜单模块
+            $('.quick-item').first().trigger('click');
+
+            // 2 .绑定tabs右键菜单
+            $.easyuiExt.bindTabsContextMenu($.easyuiExt.getMainTab());
+
+            $('#easyui-header').fadeIn(300);
+            $('#easyui-footer').fadeIn(300);
+        }
+    </script>
 </body>
 </html>
