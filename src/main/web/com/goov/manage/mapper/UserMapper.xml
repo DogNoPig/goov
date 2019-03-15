@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.goov.manage.dao.UserDao">
+
+    <select id="getUserByUsername" resultType="com.goov.sys.entity.User" parameterType="String">
+        SELECT
+            u.USER_ID AS userid,
+            u.USER_NAME AS username,
+            u.`PASSWORD` AS password
+        FROM
+            sys_user u
+        WHERE
+            u.USER_NAME = #{userName}
+    </select>
+
+</mapper>
