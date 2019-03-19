@@ -13,4 +13,13 @@
             u.USER_NAME = #{userName}
     </select>
 
+    <select id="findUserByPage" resultType="hashmap">
+        select
+            u.USER_ID AS userid,
+            u.USER_NAME AS username,
+            u.`PASSWORD` AS password
+        from
+            sys_user u
+    </select>
+
 </mapper>

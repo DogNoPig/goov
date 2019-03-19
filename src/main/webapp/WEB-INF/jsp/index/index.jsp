@@ -128,6 +128,7 @@
             <div id="user-info-mm" style="width:150px;">
                 <shiro:hasPermission name="NO1">
                     <div>我的资料</div>
+                    <a href="${ctx}/user/list">分页测试</a>
                 </shiro:hasPermission>
                 <shiro:hasPermission name="NO2">
                     <div>更改密码</div>
