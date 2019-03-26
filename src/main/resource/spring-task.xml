@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="taskJob"  class="com.goov.common.task.AttendCheckTask"  />
+    <bean  id="jobDetail"  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!--targetObject 的意思是,要执行的定时任务在那个类里-->
+        <property name="targetObject" ref="taskJob"/>
+        <!--要执行这个类里的那个方法 -->
+        <property name="targetMethod"  value="checkAttend"/>
+    </bean>
+
+    <bean id="attendCheck" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <!--ref 要参考哪一个bean-->
+        <!--从第零秒开始  每30秒执行一次    每个星号和问号都代表了一位的描述符  -->
+        <!--从左到右 依次代表 秒 分钟 小时 日 月 星期  年-->
+        <property name="jobDetail"  ref="jobDetail" />
+        <property name="cronExpression">
+            <value>0/30 * * * * ?</value>
+        </property>
+    </bean>
+
+    <!--Trigger调度工厂-->
+    <bean  id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="attendCheck"/>
+            </list>
+        </property>
+    </bean>
+</beans>
