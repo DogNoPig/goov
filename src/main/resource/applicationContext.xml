@@ -42,6 +42,8 @@
                 /login=anon
                 /test = anon
                 /static/**/**=anon
+                /testWebsocket=anon
+                /websocket=anon
                 <!--  /**/home=perms[home] perms表示需要该权限才能访问的页面
                  /**/**/add=perms[add]perms表示需要add权限才能添加
                  /**/**/edit=perms[edit]

@@ -18,4 +18,12 @@ public class TestController {
         return "redirect:/login";
     }
 
+    @RequestMapping("/testWebsocket")
+    public String testWebSocket() {
+        System.out.println("测试连接");
+//        Integer count = testService.selectCount();
+//        System.out.println("答案数量为+"+count);
+        return "/TestWebSocket";
+    }
+
 }

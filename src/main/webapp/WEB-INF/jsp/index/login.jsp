@@ -29,6 +29,7 @@
     <div class="project-icon-div">
         <span class="fa fa-leaf"></span>
     </div>
+    <a href="${ctx}/testWebsocket">测试webSocket</a>
     <div class="welcome-div">
         <span class="welcome-tip">欢迎登录</span>
     </div>
