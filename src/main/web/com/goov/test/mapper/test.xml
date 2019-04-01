@@ -8,4 +8,14 @@
 
     </select>
 
+    <select id="findUserByName" parameterType="String" resultType="com.goov.sys.entity.User">
+        select
+          USER_NAME as username,
+          password as password
+        from
+          sys_user
+        where
+          USER_NAME LIKE CONCAT('%',#{message},'%')
+    </select>
+
 </mapper>

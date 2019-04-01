@@ -1,16 +1,35 @@
-package com.goov.test;
+package com.goov.test.controller;
+
+import com.goov.sys.entity.User;
+import com.goov.test.service.impl.TestServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * @ServerEndpoint 注解是一个类层次的注解，它的功能主要是将目前的类定义成一个websocket服务器端,
  * 注解的值将被用于监听用户连接的终端访问URL地址,客户端可以通过这个URL来连接到WebSocket服务器端
  */
+//@ServerEndpoint(value="/websocket/{playerId}",configurator = SpringConfigurator.class) 网传这也可以实现依赖注入
 @ServerEndpoint("/websocket")
+@Controller
 public class WebSocketTest {
+
+    //解决service注入失败问题
+    @Autowired
+    private static TestServiceImpl testService;
+    // 注入的时候，给类的 service 注入
+    @Autowired
+    public void setTestService(TestServiceImpl testService) {
+        WebSocketTest.testService = testService;
+    }
+
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
     private static int onlineCount = 0;
 
@@ -50,10 +69,14 @@ public class WebSocketTest {
     @OnMessage
     public void onMessage(String message, Session session) {
         System.out.println("来自客户端的消息:" + message);
+       // testService = (TestService) ContextLoader.getCurrentWebApplicationContext().getBean("testService");
+        List<User> users = testService.findUserByName(message);
         //群发消息
         for(WebSocketTest item: webSocketSet){
             try {
-                item.sendMessage(session.getRequestURI()+":"+message);
+                for (User user: users) {
+                    item.sendMessage(new Date()+":"+user.getUsername()+":"+user.getPassword());
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 continue;
